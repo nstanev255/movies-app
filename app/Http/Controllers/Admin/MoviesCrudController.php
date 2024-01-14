@@ -19,9 +19,61 @@ class MoviesCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    private function getFullData() {
+        return [
+            [
+                'name' => 'title',
+                'label' => 'Title',
+                'type' => 'text'
+            ],
+            [
+                'name' => 'description',
+                'label' => 'Description',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'aired',
+                'label' => 'Aired Date',
+                'type' => 'date'
+            ],
+            [
+                'name' => 'score',
+                'label' => 'Score',
+                'type' => 'number'
+            ],
+            [
+                'label' => 'Genres',
+                'type' => 'select_multiple',
+                'name' => 'genres',
+                'entity'=> 'genres',
+                'model' => '\App\Models\Genres',
+                'attribute' => 'name',
+                'pivot' => true
+            ],
+            [
+                'label' => 'Actors',
+                'type' => 'select_multiple',
+                'name' => 'actors',
+                'entity'=> 'actors',
+                'model' => '\App\Models\People',
+                'attribute' => 'name',
+                'pivot' => true
+            ],
+            [
+                'label' => 'Producers',
+                'type' => 'select_multiple',
+                'name' => 'producers',
+                'entity' => 'producers',
+                'model' => '\App\Models\People',
+                'attribute' => 'name',
+                'pivot' => true,
+            ]
+        ];
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -29,11 +81,13 @@ class MoviesCrudController extends CrudController
         CRUD::setModel(\App\Models\Movies::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/movies');
         CRUD::setEntityNameStrings('movies', 'movies');
+
+        $this->crud->addFields($this->getFullData());
     }
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -49,7 +103,7 @@ class MoviesCrudController extends CrudController
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -68,7 +122,7 @@ class MoviesCrudController extends CrudController
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */

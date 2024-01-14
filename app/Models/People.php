@@ -36,6 +36,11 @@ class People extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function occupations(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Occupations::class, 'people_occupations', 'person_id', 'occupation_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

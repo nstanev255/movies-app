@@ -19,9 +19,38 @@ class PeopleCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    private function getFullData() {
+        return [
+            [
+                'name' => 'name',
+                'label' => 'Name',
+                'type' => 'text'
+            ],
+            [
+                'name' => 'bio',
+                'label' => "Short Bio",
+                'type' => 'summernote'
+            ],
+            [
+              'name' => 'birth',
+              'label' => 'Date of birth',
+              'type' => 'date'
+            ],
+            [
+                'label' => 'Occupations',
+                'type' => 'select_multiple',
+                'name' => 'occupations',
+                'entity' => 'occupations',
+                'model' => 'App\Models\Occupations',
+                'attribute' => 'occupation',
+                'pivot' => true,
+           ]
+        ];
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -29,11 +58,13 @@ class PeopleCrudController extends CrudController
         CRUD::setModel(\App\Models\People::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/people');
         CRUD::setEntityNameStrings('people', 'people');
+
+        $this->crud->addFields($this->getFullData());
     }
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -49,7 +80,7 @@ class PeopleCrudController extends CrudController
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -68,7 +99,7 @@ class PeopleCrudController extends CrudController
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
