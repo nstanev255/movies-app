@@ -20,7 +20,8 @@ class MoviesCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    private function getFullData() {
+    private function getFullData($list_view = FALSE): array
+    {
         return [
             [
                 'name' => 'title',
@@ -53,7 +54,7 @@ class MoviesCrudController extends CrudController
             ],
             [
                 'label' => 'Genres',
-                'type' => 'select_multiple',
+                'type' => ($list_view ? 'select' : 'select_multiple'),
                 'name' => 'genres',
                 'entity'=> 'genres',
                 'model' => '\App\Models\Genres',
@@ -62,7 +63,7 @@ class MoviesCrudController extends CrudController
             ],
             [
                 'label' => 'Actors',
-                'type' => 'select_multiple',
+                'type' => ($list_view ? 'select' : 'select_multiple'),
                 'name' => 'actors',
                 'entity'=> 'actors',
                 'model' => '\App\Models\People',
@@ -71,7 +72,7 @@ class MoviesCrudController extends CrudController
             ],
             [
                 'label' => 'Producers',
-                'type' => 'select_multiple',
+                'type' => ($list_view ? 'select' : 'select_multiple'),
                 'name' => 'producers',
                 'entity' => 'producers',
                 'model' => '\App\Models\People',
@@ -81,7 +82,8 @@ class MoviesCrudController extends CrudController
             [
                 'label' => 'Cover Image',
                 'name' => 'image',
-                'type' => 'upload',
+                'type' => ($list_view ? 'view' : 'upload'),
+                'view' => 'partials/image',
                 'upload' => true
             ]
         ];
@@ -109,7 +111,9 @@ class MoviesCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+//        CRUD::setFromDb(); // set columns from db columns.
+        $this->crud->set('show.setFromDb', false);
+        $this->crud->addColumns($this->getFullData(true));
 
         /**
          * Columns can be defined using the fluent syntax:
@@ -150,5 +154,11 @@ class MoviesCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+
+    protected function setupShowOperation() {
+        $this->crud->set('show.setFromDb', false);
+        $this->crud->addColumns($this->getFullData(true));
     }
 }

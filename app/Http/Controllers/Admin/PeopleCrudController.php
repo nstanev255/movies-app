@@ -19,7 +19,7 @@ class PeopleCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    private function getFullData() {
+    private function getFullData($list_view = FALSE) {
         return [
             [
                 'name' => 'name',
@@ -29,7 +29,7 @@ class PeopleCrudController extends CrudController
             [
                 'name' => 'bio',
                 'label' => "Short Bio",
-                'type' => 'summernote'
+                'type' => ($list_view ? 'text' : 'summernote')
             ],
             [
               'name' => 'birth',
@@ -38,7 +38,7 @@ class PeopleCrudController extends CrudController
             ],
             [
                 'label' => 'Occupations',
-                'type' => 'select_multiple',
+                'type' => ($list_view ? 'select' : 'select_multiple'),
                 'name' => 'occupations',
                 'entity' => 'occupations',
                 'model' => 'App\Models\Occupations',
@@ -70,7 +70,8 @@ class PeopleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        $this->crud->set('show.setFromDb', false);
+        $this->crud->addColumns($this->getFullData(true));
 
         /**
          * Columns can be defined using the fluent syntax:
@@ -108,5 +109,10 @@ class PeopleCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation() {
+        $this->crud->set('show.setFromDb', false);
+        $this->crud->addColumns($this->getFullData(true));
     }
 }
