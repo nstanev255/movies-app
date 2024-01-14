@@ -42,6 +42,15 @@ class MoviesCrudController extends CrudController
                 'type' => 'number'
             ],
             [
+                'label' => 'Type',
+                'type' => 'select',
+                'name' => 'type_id',
+                'entity' => 'type',
+                'model' => '\App\Models\Types',
+                'attribute' => 'type',
+                'pivot' => true
+            ],
+            [
                 'label' => 'Genres',
                 'type' => 'select_multiple',
                 'name' => 'genres',
@@ -110,7 +119,11 @@ class MoviesCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation([
-            // 'name' => 'required|min:2',
+             'title' => 'required|min:2',
+             'type_id' => 'required',
+             'genres' => 'required',
+             'actors' => 'required',
+             'producers' => 'required'
         ]);
         CRUD::setFromDb(); // set fields from db columns.
 

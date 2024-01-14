@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('type_id')->index();
             $table->string('title');
             $table->longText('description');
             $table->dateTime('aired');
             $table->unsignedDouble('score', 10);
             $table->timestamps();
+
+            $table->foreign('type_id')->references('id')
+                ->on('types')->cascadeOnDelete();
         });
     }
 

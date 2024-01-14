@@ -35,6 +35,11 @@ class Movies extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Types::class, 'type_id');
+    }
+
     public function genres(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Genres::class, 'genres_movies', 'movie_id', 'genre_id');

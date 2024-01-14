@@ -87,7 +87,9 @@ class PeopleCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation([
-            // 'name' => 'required|min:2',
+             'name' => 'required',
+             'birth' => 'required',
+             'occupations' => 'required'
         ]);
         CRUD::setFromDb(); // set fields from db columns.
 
