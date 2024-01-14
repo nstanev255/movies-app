@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\MoviesRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Backpack\CRUD\app\Library\Validation\Rules\ValidUpload;
 
 /**
  * Class MoviesCrudController
@@ -76,6 +77,12 @@ class MoviesCrudController extends CrudController
                 'model' => '\App\Models\People',
                 'attribute' => 'name',
                 'pivot' => true,
+            ],
+            [
+                'label' => 'Cover Image',
+                'name' => 'image',
+                'type' => 'upload',
+                'upload' => true
             ]
         ];
     }
@@ -123,7 +130,8 @@ class MoviesCrudController extends CrudController
              'type_id' => 'required',
              'genres' => 'required',
              'actors' => 'required',
-             'producers' => 'required'
+             'producers' => 'required',
+             'image' => ValidUpload::field('required')->file('mimes:jpg,png|max:2028'),
         ]);
         CRUD::setFromDb(); // set fields from db columns.
 
