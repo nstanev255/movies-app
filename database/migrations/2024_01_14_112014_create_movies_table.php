@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->text('synopsis');
             // We can have movies that have not yet aired...
-            $table->dateTime('aired')->nullable();
+            $table->date('aired')->nullable();
             $table->unsignedDouble('score', 10);
             $table->timestamps();
         });

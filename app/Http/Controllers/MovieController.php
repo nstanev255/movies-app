@@ -4,30 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Genres;
 use App\Models\Movies;
+use App\Models\Producers;
+use App\Services\MovieServiceContract;
 use App\Utils\QueryBuilderUtils;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class MovieController extends Controller
 {
+    public function __construct(protected MovieServiceContract $movieService)
+    {
+    }
+
     public function show() {
+        $genres = Genres::all();
+        $producers = Producers::all();
 
-        $queryParams = \request()->query->all();
-        $search_query = QueryBuilderUtils::transform_query_params($queryParams);
+        $movies = $this->movieService->search(\request()->query());
 
-        $query = Movies::query();
-        if(in_array('where', $queryParams)) {
-            $whereQueries = $queryParams['where'];
-            $query->where($whereQueries);
-        }
-
-        if(in_array('producer', $queryParams)) {
-            $producer = $queryParams['producer'];
-            $query->whereRelation('producers', $producer);
-        }
-
-        if(in_array('actor', $queryParams)) {
-
-        }
+        return view('search', ['genres'=> $genres, 'producers' => $producers, 'movies' => $movies]);
 
     }
 }
