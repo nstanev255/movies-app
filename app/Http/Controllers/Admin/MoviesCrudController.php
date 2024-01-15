@@ -29,8 +29,8 @@ class MoviesCrudController extends CrudController
                 'type' => 'text'
             ],
             [
-                'name' => 'description',
-                'label' => 'Description',
+                'name' => 'synopsis',
+                'label' => 'Synopsis',
                 'type' => 'text',
             ],
             [
@@ -41,16 +41,8 @@ class MoviesCrudController extends CrudController
             [
                 'name' => 'score',
                 'label' => 'Score',
-                'type' => 'number'
-            ],
-            [
-                'label' => 'Type',
-                'type' => 'select',
-                'name' => 'type_id',
-                'entity' => 'type',
-                'model' => '\App\Models\Types',
-                'attribute' => 'type',
-                'pivot' => true
+                'type' => ($list_view ? 'text' : 'number'),
+                'attributes' => ['step' => 'any'],
             ],
             [
                 'label' => 'Genres',
@@ -62,20 +54,11 @@ class MoviesCrudController extends CrudController
                 'pivot' => true
             ],
             [
-                'label' => 'Actors',
-                'type' => ($list_view ? 'select' : 'select_multiple'),
-                'name' => 'actors',
-                'entity'=> 'actors',
-                'model' => '\App\Models\People',
-                'attribute' => 'name',
-                'pivot' => true
-            ],
-            [
                 'label' => 'Producers',
                 'type' => ($list_view ? 'select' : 'select_multiple'),
                 'name' => 'producers',
                 'entity' => 'producers',
-                'model' => '\App\Models\People',
+                'model' => '\App\Models\Producers',
                 'attribute' => 'name',
                 'pivot' => true,
             ],
@@ -130,11 +113,12 @@ class MoviesCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation([
-             'title' => 'required|min:2',
-             'type_id' => 'required',
+             'title' => 'required|min:2|max:30',
+             'synopsis' => 'max:1024',
              'genres' => 'required',
-             'actors' => 'required',
+             'score' => 'numeric|between:0.01,10.00',
              'producers' => 'required',
+             'aired' => '',
              'image' => ValidUpload::field('required')->file('mimes:jpg,png|max:2028'),
         ]);
         CRUD::setFromDb(); // set fields from db columns.

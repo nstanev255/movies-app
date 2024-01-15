@@ -56,8 +56,8 @@ class GenresCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation([
-             'name' => 'required',
-             'description' => 'required'
+             'name' => 'required|max:30',
+             'description' => 'required|max:1024'
         ]);
         CRUD::setFromDb(); // set fields from db columns.
 

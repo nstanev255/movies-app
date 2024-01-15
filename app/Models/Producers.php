@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class People extends Model
+class Producers extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -17,7 +17,7 @@ class People extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'people';
+    protected $table = 'producers';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -35,11 +35,6 @@ class People extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function occupations(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(Occupations::class, 'people_occupations', 'person_id', 'occupation_id');
-    }
 
     /*
     |--------------------------------------------------------------------------

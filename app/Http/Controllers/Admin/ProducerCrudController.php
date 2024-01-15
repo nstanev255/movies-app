@@ -11,7 +11,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class PeopleCrudController extends CrudController
+class ProducerCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -29,22 +29,13 @@ class PeopleCrudController extends CrudController
             [
                 'name' => 'bio',
                 'label' => "Short Bio",
-                'type' => ($list_view ? 'text' : 'summernote')
+                'type' => 'text'
             ],
             [
               'name' => 'birth',
               'label' => 'Date of birth',
               'type' => 'date'
-            ],
-            [
-                'label' => 'Occupations',
-                'type' => ($list_view ? 'select' : 'select_multiple'),
-                'name' => 'occupations',
-                'entity' => 'occupations',
-                'model' => 'App\Models\Occupations',
-                'attribute' => 'occupation',
-                'pivot' => true,
-           ]
+            ]
         ];
     }
 
@@ -55,9 +46,9 @@ class PeopleCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\People::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/people');
-        CRUD::setEntityNameStrings('people', 'people');
+        CRUD::setModel(\App\Models\Producers::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/producers');
+        CRUD::setEntityNameStrings('producers', 'producers');
 
         $this->crud->addFields($this->getFullData());
     }
@@ -88,9 +79,8 @@ class PeopleCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation([
-             'name' => 'required',
+             'name' => 'required|min:2|max:30',
              'birth' => 'required',
-             'occupations' => 'required'
         ]);
         CRUD::setFromDb(); // set fields from db columns.
 
