@@ -61,7 +61,7 @@ php artisan serve --port 80
 ```
 
 ### 5. Some notes
-1. Initially the index page might be empty, as there are no records created yet in the database. \ In order to create new records you need to navigate to the `/admin` page and register a new admin account. From there you can log in and start creating new records. 
+1. Initially the index page might be empty, as there are no records created yet in the database. In order to create new records you need to navigate to the `/admin` page and register a new admin account. From there you can log in and start creating new records. 
 2. The application's admin panel is powered by [Backpack CRUD](https://github.com/Laravel-Backpack/CRUD), which is a convenient way for spinning up admin dashboards fast.
 
 ## License
