@@ -36,7 +36,7 @@
                     <label for="producers[]"> Producers </label>
                     <select class="form-control" id="producers[]" type="text" name="producers[]" multiple>
                         @foreach($producers as $producer)
-                            <option value="{{$producer->id}}">{{$producer->name}}</option>
+                            <option value="{{$producer->id}}" {{ array_key_exists('producers', request()->query()) && !is_null(request()->query()['producers']) && in_array($producer->id, request()->query()['producers']) ? 'selected' : ''  }}>{{$producer->name}} </option>
                         @endforeach
                     </select>
                 </div>
