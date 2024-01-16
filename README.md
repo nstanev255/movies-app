@@ -14,7 +14,7 @@ Before you can boot up the app you need a few things:
 ### 1. Clone the repo
 Clone the repo to you local machine using git....
 ```bash
-git clone 
+git clone https://github.com/nstanev255/movies-app
 ```
 ### 2. Navigate into the project & install the needed composer dependencies.
 Navigate into the project
@@ -28,13 +28,13 @@ composer install
 ```
 
 ### 3. Configure your database.
-You can either just use docker and ``` docker compose up``` the project, or install mysql manually.
+You can either just use docker and docker-compose, or install mysql manually.
 
 #### 3.1.1 (optional) Install mysql manually.
 You can check [this](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04) tutorial in order to get mysql up and running manually.
 
 - Create a new database named 'movies-app' 
-- Go into the `.env` file and edit the database username and password `DB_USERNAME, DB_PASSWORD ` with your details.
+- Go into the `.env` file and edit the database username and password `DB_USERNAME, DB_PASSWORD` with your details.
 
 #### 3.1.2 (optional) Use docker-compose.
 The project already comes with a configured ready to go mysql docker container. \
