@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ValidationException;
 use App\Models\Genres;
-use App\Models\Movies;
 use App\Models\Producers;
 use App\Services\MovieServiceContract;
-use App\Utils\QueryBuilderUtils;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class MovieController extends Controller
@@ -32,6 +29,9 @@ class MovieController extends Controller
         } catch (ValidationException $exception) {
             $error['field'] = $exception->getField();
             $error['message'] = $exception->getMessage();
+
+            // Display all movies...
+            $movies = $this->movieService->search([]);
         }
 
 

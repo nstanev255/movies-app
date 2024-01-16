@@ -13,15 +13,21 @@
 
                 <div class="form-group col mb-3">
                     <label for="year"> Year </label>
-                    <p class="text-danger"> {{ $error  }} </p>
-                    <input class="form-control" id="year" type="number" min="1800" max="2099" name="year">
+                    <input class="form-control" id="year" type="number" min="1800" max="2099" name="year"
+                    value="{{ array_key_exists('year', request()->query()) && !is_null(request()->query()['year']) ? request()->query()['year'] : ''  }}">
+                    @if($error['field'] === 'year')
+                        <p class="text-danger"> {{ $error['message']  }} </p>
+                    @endif
                 </div>
 
                 <div class="form-group col">
                     <label for="genres[]"> Genres </label>
+                    @if($error['field'] === 'genres')
+                        <p class="text-danger"> {{ $error['message'] }}  </p>
+                    @endif
                     <select class="form-control" id="genres[]" name="genres[]" multiple>
                         @foreach($genres as $genre)
-                            <option value="{{$genre->id}}">{{$genre->name}}</option>
+                            <option value="{{$genre->id}}" {{ array_key_exists('genres', request()->query()) && !is_null(request()->query()['genres']) && in_array($genre->id, request()->query()['genres']) ? 'selected' : ''  }}>{{$genre->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -55,7 +61,6 @@
         </tr>
         </thead>
         <tbody>
-        @if(empty($error))
             @foreach($movies as $movie)
                 <tr>
                     <td>{{$movie->title}}</td>
@@ -72,10 +77,4 @@
     </table>
 
     <div class="d-flex justify-content-center p-2"> {{ $movies->links() }} </div>
-
-    @else
-        <div class="text-danger">
-            <h1> {{ $error  }} </h1>
-        </div>
-    @endif
 @endsection
