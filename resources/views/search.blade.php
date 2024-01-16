@@ -2,16 +2,18 @@
 @extends(backpack_view( backpack_auth()->guest() ? 'layouts.plain' : 'blank'))
 
 @section('content')
-    <form name="search" id="search" method="get" action="{{url('/')}}" >
+    <form name="search" id="search" method="get" action="{{url('/')}}">
         <div class="card">
             <div class="card-body row">
                 <div class="form-group col mb-3">
                     <label for="title"> Title </label>
-                    <input id="title" class="form-control" type="text" name="title">
+                    <input id="title" class="form-control" type="text" name="title"
+                           value="{{ array_key_exists('title', request()->query()) && !is_null(request()->query()['title']) ? request()->query()['title'] : ''  }}">
                 </div>
 
                 <div class="form-group col mb-3">
                     <label for="year"> Year </label>
+                    <p class="text-danger"> {{ $error  }} </p>
                     <input class="form-control" id="year" type="number" min="1800" max="2099" name="year">
                 </div>
 
@@ -33,7 +35,7 @@
                     </select>
                 </div>
 
-                    <button class="form-control" type="submit">Search</button>
+                <button class="form-control" type="submit">Search</button>
             </div>
 
         </div>
@@ -53,21 +55,27 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($movies as $movie)
-            <tr>
-                <td>{{$movie->title}}</td>
-                <td>{{strlen($movie->synopsis) > 50 ? substr($movie->synopsis, 0, 47) . '...' : $movie->synopsis}}</td>
-                <td>{{$movie->aired}}</td>
-                <td>{{$movie->score}}</td>
-                <td>{{ $movie->genres->pluck('name')->implode(', ') }}</td>
-                <td>{{ $movie->producers->pluck('name')->implode(', ')  }}</td>
-                <td><img alt="{{$movie->title}}" src="{{$movie->image}}" width="100px" height="100px"></td>
+        @if(empty($error))
+            @foreach($movies as $movie)
+                <tr>
+                    <td>{{$movie->title}}</td>
+                    <td>{{strlen($movie->synopsis) > 50 ? substr($movie->synopsis, 0, 47) . '...' : $movie->synopsis}}</td>
+                    <td>{{$movie->aired}}</td>
+                    <td>{{$movie->score}}</td>
+                    <td>{{ $movie->genres->pluck('name')->implode(', ') }}</td>
+                    <td>{{ $movie->producers->pluck('name')->implode(', ')  }}</td>
+                    <td><img alt="{{$movie->title}}" src="{{$movie->image}}" width="100px" height="100px"></td>
 
-            </tr>
-        @endforeach
-
+                </tr>
+            @endforeach
         </tbody>
     </table>
 
     <div class="d-flex justify-content-center p-2"> {{ $movies->links() }} </div>
+
+    @else
+        <div class="text-danger">
+            <h1> {{ $error  }} </h1>
+        </div>
+    @endif
 @endsection

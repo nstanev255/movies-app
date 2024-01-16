@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ValidationException;
 use App\Models\Genres;
 use App\Models\Movies;
 use App\Models\Producers;
@@ -20,9 +21,20 @@ class MovieController extends Controller
         $genres = Genres::all();
         $producers = Producers::all();
 
-        $movies = $this->movieService->search(\request()->query());
+        $movies = array();
+        $error = [
+            'field' => "",
+            'message' => "",
+        ];
 
-        return view('search', ['genres'=> $genres, 'producers' => $producers, 'movies' => $movies]);
+        try {
+            $movies = $this->movieService->search(\request()->query());
+        } catch (ValidationException $exception) {
+            $error['field'] = $exception->getField();
+            $error['message'] = $exception->getMessage();
+        }
 
+
+        return view('search', ['genres'=> $genres, 'producers' => $producers, 'movies' => $movies, 'error' => $error]);
     }
 }

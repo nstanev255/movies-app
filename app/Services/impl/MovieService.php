@@ -2,6 +2,7 @@
 
 namespace App\Services\impl;
 
+use App\Exceptions\ValidationException;
 use App\Models\Movies;
 use App\Services\GenresServiceContract;
 use App\Services\MovieServiceContract;
@@ -24,6 +25,7 @@ class MovieService implements MovieServiceContract
      * @param $query_params
      *   Query params...
      * @return void
+     * @throws ValidationException
      */
     private function validate($query_params) {
 
@@ -32,7 +34,7 @@ class MovieService implements MovieServiceContract
             $genres = $query_params['genres'];
             $all_genres_exist = $this->genresService->checkIfIdsExist($genres);
             if(!$all_genres_exist) {
-                throw new \Exception("Some of the genres do not exist...");
+                throw new ValidationException("Some of the genres do not exist...", 'genres');
             }
         }
 
@@ -40,7 +42,7 @@ class MovieService implements MovieServiceContract
         if(array_key_exists('producers', $query_params) && !is_null($query_params['producers'])) {
             $producers = $query_params['producers'];
             if($this->producerService->checkIfAllIdsExist($producers)) {
-                throw new \Exception("Some of the producers do not exist..");
+                throw new ValidationException("Some of the producers do not exist..", 'producers');
             }
 
         }
@@ -49,10 +51,19 @@ class MovieService implements MovieServiceContract
         if(array_key_exists('year', $query_params) && !is_null($query_params['year'])) {
             $year = $query_params['year'];
             if(!preg_match("^(18|19|20)\d{2}$^", $year)) {
-                throw new \Exception("Year needs to be between 1800 and 2099...");
+                throw new ValidationException("Year needs to be between 1800 and 2099...", 'year');
             }
         }
     }
+
+    /**
+     * Creates the search Query based off of the query params.
+     *
+     * @param array $queryParams
+     *   The query params that come from the request.
+     * @return Builder
+     *   The Query, ready for execution.
+     */
     function create_query(array $queryParams){
         $query = Movies::query();
 
@@ -81,6 +92,12 @@ class MovieService implements MovieServiceContract
         return $query;
     }
 
+    /**
+     * Perform a search on the movies...
+     *
+     * @throws ValidationException
+     *   Throws ValidationException in case a validation fails...
+     */
     function search(array $queryParams)
     {
         // Validate that the request is fine...
