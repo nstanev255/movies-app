@@ -61,6 +61,7 @@
         </tr>
         </thead>
         <tbody>
+        @if(count($movies) > 0)
             @foreach($movies as $movie)
                 <tr>
                     <td>{{$movie->title}}</td>
@@ -73,6 +74,13 @@
 
                 </tr>
             @endforeach
+        @else
+            <tr class="odd">
+                <td class="dataTables_empty">
+                    No movies yet...
+                </td>
+            </tr>
+        @endif
         </tbody>
     </table>
 
