@@ -113,13 +113,13 @@ class MoviesCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation([
-             'title' => 'required|min:2|max:30',
+             'title' => 'required|min:2|max:60',
              'synopsis' => 'max:1024',
              'genres' => 'required',
              'score' => 'numeric|between:0.01,10.00',
              'producers' => 'required',
-             'aired' => '',
-             'image' => ValidUpload::field('required')->file('mimes:jpg,png|max:2028'),
+             // Max of 2MB + only images...
+             'image' => ValidUpload::field('required')->file('mimes:jpg,png|max:2048'),
         ]);
         CRUD::setFromDb(); // set fields from db columns.
 
