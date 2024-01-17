@@ -27,6 +27,7 @@ class MovieController extends Controller
         try {
             $movies = $this->movieService->search(\request()->query());
         } catch (ValidationException $exception) {
+            echo $exception->getMessage();
             $error['field'] = $exception->getField();
             $error['message'] = $exception->getMessage();
 

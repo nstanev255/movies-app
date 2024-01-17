@@ -51,6 +51,14 @@ Run the following command :
 php artisan migrate
 ```
 
+### 3.3 Run the seeds.
+Run the laravel seeds in order for the database to have some initial records in the tables. \
+\
+Run the following command :
+```bash
+php artisan db:seed
+```
+
 
 ### 4 Start the app
 Start the app from the dev server. \

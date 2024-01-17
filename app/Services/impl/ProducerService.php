@@ -15,7 +15,6 @@ class ProducerService implements ProducerServiceContract
         }
 
         $found_producers_count = Producers::query()->whereIn('id', $ids)->count();
-
         return $found_producers_count === count($ids);
     }
 }

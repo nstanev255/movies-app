@@ -30,6 +30,9 @@
                             <option value="{{$genre->id}}" {{ array_key_exists('genres', request()->query()) && !is_null(request()->query()['genres']) && in_array($genre->id, request()->query()['genres']) ? 'selected' : ''  }}>{{$genre->name}}</option>
                         @endforeach
                     </select>
+                    @if($error['field'] === 'genres')
+                        <p class="text-danger"> {{ $error['message']  }} </p>
+                    @endif
                 </div>
 
                 <div class="form-group col mb-3">
@@ -39,6 +42,9 @@
                             <option value="{{$producer->id}}" {{ array_key_exists('producers', request()->query()) && !is_null(request()->query()['producers']) && in_array($producer->id, request()->query()['producers']) ? 'selected' : ''  }}>{{$producer->name}} </option>
                         @endforeach
                     </select>
+                    @if($error['field'] === 'producers')
+                        <p class="text-danger"> {{ $error['message']  }} </p>
+                    @endif
                 </div>
 
                 <button class="form-control" type="submit">Search</button>

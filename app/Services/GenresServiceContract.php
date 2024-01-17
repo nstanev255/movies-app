@@ -5,7 +5,7 @@ namespace App\Services;
 interface GenresServiceContract
 {
     /**
-     * Checks if all the ids exist..
+     * Checks if all the ids exist...
      *
      * @param array $ids
      *   The array of ids that we need to check.

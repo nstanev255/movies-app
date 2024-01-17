@@ -41,7 +41,7 @@ class MovieService implements MovieServiceContract
         // Validate if all of the given producers exist...
         if(array_key_exists('producers', $query_params) && !is_null($query_params['producers'])) {
             $producers = $query_params['producers'];
-            if($this->producerService->checkIfAllIdsExist($producers)) {
+            if(!$this->producerService->checkIfAllIdsExist($producers)) {
                 throw new ValidationException("Some of the producers do not exist..", 'producers');
             }
 
